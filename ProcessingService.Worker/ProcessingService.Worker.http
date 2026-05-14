@@ -1,0 +1,5 @@
+@ProcessingService_HostAddress = http://localhost:5124
+
+### Health Check
+GET {{ProcessingService_HostAddress}}/health
+Accept: application/json

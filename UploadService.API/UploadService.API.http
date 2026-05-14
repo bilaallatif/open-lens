@@ -1,0 +1,22 @@
+@UploadService_HostAddress = http://localhost:5209
+
+### Health Check
+GET {{UploadService_HostAddress}}/health
+Accept: application/json
+
+### Get presigned upload URL
+GET {{UploadService_HostAddress}}/presigned-url
+Accept: application/json
+
+> {%
+    client.global.set("uploadUrl", response.body.uploadUrl)
+%}
+
+###
+
+### Upload image to presigned URL
+PUT {{uploadUrl}}
+x-ms-blob-type: BlockBlob
+Content-Type: image/jpeg
+
+< ./Assets/test.jpg

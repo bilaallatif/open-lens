@@ -1,0 +1,48 @@
+# Build outputs
+[Bb]in/
+[Oo]bj/
+
+# NuGet
+*.nupkg
+*.snupkg
+.nuget/
+packages/
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Visual Studio / MSBuild
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+.vs/
+
+# JetBrains Rider
+.idea/
+
+# Test results
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+*.trx
+*.coverage
+*.coveragexml
+TestResult.xml
+
+# Publish / deployment
+[Pp]ublish/
+PublishScripts/
+
+# Azure
+*.azurePubxml
+*.pubxml
+*.publishproj
+
+# OS artifacts
+.DS_Store
+Thumbs.db
+
+# Local secrets / environment overrides
+appsettings.Development.json
+*.local.json
+.env

@@ -1,0 +1,53 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Folder Name="/build/">
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
+    <File Path="docker-compose.yml" />
+    <File Path="global.json" />
+    <File Path=".gitignore" />
+  </Folder>
+  <Folder Name="/services/" />
+  <Folder Name="/services/ProcessingService/" />
+  <Folder Name="/services/ProcessingService/src/">
+    <Project Path="ProcessingService.Application/ProcessingService.Application.csproj" />
+    <Project Path="ProcessingService.Domain/ProcessingService.Domain.csproj" />
+    <Project Path="ProcessingService.Infrastructure/ProcessingService.Infrastructure.csproj" />
+    <Project Path="ProcessingService.Worker/ProcessingService.Worker.csproj" />
+  </Folder>
+  <Folder Name="/services/ProcessingService/tests/">
+    <Project Path="ProcessingService.Infrastructure.IntegrationTests/ProcessingService.Infrastructure.IntegrationTests.csproj" />
+    <Project Path="ProcessingService.Worker.IntegrationTests/ProcessingService.Worker.IntegrationTests.csproj" />
+  </Folder>
+  <Folder Name="/services/SearchService/" />
+  <Folder Name="/services/SearchService/src/">
+    <Project Path="SearchService.Api/SearchService.Api.csproj" />
+    <Project Path="SearchService.Application/SearchService.Application.csproj" />
+    <Project Path="SearchService.Domain/SearchService.Domain.csproj" />
+    <Project Path="SearchService.Infrastructure/SearchService.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/services/SearchService/tests/">
+    <Project Path="SearchService.Api.IntegrationTests/SearchService.Api.IntegrationTests.csproj" />
+    <Project Path="SearchService.Infrastructure.IntegrationTests/SearchService.Infrastructure.IntegrationTests.csproj" />
+  </Folder>
+  <Folder Name="/services/Shared/" />
+  <Folder Name="/services/Shared/ObjectStorage/">
+    <Project Path="Shared.ObjectStorage.Application/Shared.ObjectStorage.Application.csproj" />
+    <Project Path="Shared.ObjectStorage.Infrastructure/Shared.ObjectStorage.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/services/Shared/Repository/">
+    <Project Path="Shared.Repository.Infrastructure/Shared.Repository.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/services/UploadService/" />
+  <Folder Name="/services/UploadService/src/">
+    <Project Path="UploadService.Api/UploadService.Api.csproj" />
+    <Project Path="UploadService.Application/UploadService.Application.csproj" />
+  </Folder>
+  <Folder Name="/services/UploadService/tests/">
+    <Project Path="UploadService.Api.IntegrationTests/UploadService.Api.IntegrationTests.csproj" />
+  </Folder>
+</Solution>
