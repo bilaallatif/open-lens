@@ -29,7 +29,7 @@ jobs:
         run: dotnet tool restore
 
       - name: Check formatting
-        run: csharpier check .
+        run: dotnet csharpier check .
 
   lint:
     name: Lint
