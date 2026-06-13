@@ -52,4 +52,5 @@
     <Project Path="UploadService.Api.IntegrationTests/UploadService.Api.IntegrationTests.csproj" />
   </Folder>
   <Project Path="AppHost/AppHost.csproj" />
+  <Project Path="ServiceDefaults/ServiceDefaults.csproj" />
 </Solution>

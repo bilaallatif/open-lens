@@ -8,4 +8,16 @@
     <UserSecretsId>286e2b93-ad8d-45e4-a78f-455d5a5296ce</UserSecretsId>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Aspire.Hosting.Azure.Storage" />
+    <PackageReference Include="Aspire.Hosting.Azure.ServiceBus" />
+    <PackageReference Include="Aspire.Hosting.MongoDB" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\UploadService.Api\UploadService.Api.csproj" />
+    <ProjectReference Include="..\ProcessingService.Worker\ProcessingService.Worker.csproj" />
+    <ProjectReference Include="..\SearchService.Api\SearchService.Api.csproj" />
+  </ItemGroup>
+
 </Project>

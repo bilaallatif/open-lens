@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ServiceDefaults\ServiceDefaults.csproj" />
     <ProjectReference Include="..\ProcessingService.Infrastructure\ProcessingService.Infrastructure.csproj" />
     <ProjectReference Include="..\Shared.ObjectStorage.Infrastructure\Shared.ObjectStorage.Infrastructure.csproj" />
   </ItemGroup>
