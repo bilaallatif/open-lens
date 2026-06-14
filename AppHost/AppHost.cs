@@ -9,7 +9,7 @@ var serviceBus = builder.AddAzureServiceBus("servicebus").RunAsEmulator();
 var imageUploadedQueue = serviceBus.AddServiceBusQueue("image-uploaded");
 
 // MongoDB — image metadata store, persisted across runs via a data volume.
-var mongo = builder.AddMongoDB("mongo").WithDataVolume();
+var mongo = builder.AddMongoDB("mongo");
 var imageMetadataDb = mongo.AddDatabase("open-lens");
 
 // UploadService.Api — receives uploads and writes blobs.
