@@ -14,19 +14,16 @@ public class EndToEndTests : IAsyncLifetime
     private static readonly TimeSpan DefaultTimeout = TimeSpan.FromSeconds(120);
 
     private DistributedApplication _app = null!;
+    private HttpClient _uploadClient = null!;
+    private HttpClient _searchClient = null!;
+    private ServiceBusClient _serviceBusClient = null!;
+    private ServiceBusSender _processingServiceSender = null!;
 
     public async Task InitializeAsync()
     {
         var appHost = await DistributedApplicationTestingBuilder.CreateAsync<Projects.AppHost>();
         _app = await appHost.BuildAsync();
-    }
 
-    public async Task DisposeAsync() => await _app.DisposeAsync();
-
-    [Fact]
-    public async Task GetImageMetadataMatchingCriteria_WithUploadedAndProcessedImage_ReturnsImageMetadata()
-    {
-        // Arrange
         await _app.StartAsync().WaitAsync(DefaultTimeout);
         await _app
             .ResourceNotifications.WaitForResourceHealthyAsync("uploadservice")
@@ -38,17 +35,29 @@ public class EndToEndTests : IAsyncLifetime
             .ResourceNotifications.WaitForResourceHealthyAsync("searchservice")
             .WaitAsync(DefaultTimeout);
 
-        using var uploadClient = _app.CreateHttpClient("uploadservice");
-        using var searchClient = _app.CreateHttpClient("searchservice");
+        _uploadClient = _app.CreateHttpClient("uploadservice");
+        _searchClient = _app.CreateHttpClient("searchservice");
 
-        await using var serviceBusClient = new ServiceBusClient(
-            await _app.GetConnectionStringAsync("servicebus")
-        );
-        await using var sender = serviceBusClient.CreateSender("image-uploaded");
+        _serviceBusClient = new ServiceBusClient(await _app.GetConnectionStringAsync("servicebus"));
+        _processingServiceSender = _serviceBusClient.CreateSender("image-uploaded");
+    }
 
+    public async Task DisposeAsync()
+    {
+        _uploadClient.Dispose();
+        _searchClient.Dispose();
+        await _processingServiceSender.DisposeAsync();
+        await _serviceBusClient.DisposeAsync();
+        await _app.DisposeAsync();
+    }
+
+    [Fact]
+    public async Task GetImageMetadataMatchingCriteria_WithUploadedAndProcessedImage_ReturnsImageMetadata()
+    {
         // Act
+
         // Upload image to object store
-        using var presignedUrlResponse = await uploadClient.GetAsync("/presigned-url");
+        using var presignedUrlResponse = await _uploadClient.GetAsync("/presigned-url");
         Assert.Equal(HttpStatusCode.OK, presignedUrlResponse.StatusCode);
 
         var imageBytes = await File.ReadAllBytesAsync(Path.Combine("Assets", "test.jpg"));
@@ -66,14 +75,14 @@ public class EndToEndTests : IAsyncLifetime
         // Enqueue message to ProcessingService bus
         var subject = $"/blobServices/default/containers/images/blobs/{blobName}";
         var messageBody = BinaryData.FromString($$"""{"Subject":"{{subject}}"}""");
-        await sender.SendMessageAsync(new ServiceBusMessage(messageBody));
+        await _processingServiceSender.SendMessageAsync(new ServiceBusMessage(messageBody));
 
         // Assert
         PagedResult<ImageMetadata>? result = null;
         using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(30));
         while (!cts.IsCancellationRequested)
         {
-            using var response = await searchClient.GetAsync("/image-metadata", cts.Token);
+            using var response = await _searchClient.GetAsync("/image-metadata", cts.Token);
             result = await response.Content.ReadFromJsonAsync<PagedResult<ImageMetadata>>(
                 cancellationToken: cts.Token
             );
