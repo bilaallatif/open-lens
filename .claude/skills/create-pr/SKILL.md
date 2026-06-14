@@ -66,8 +66,12 @@ Read `.github/pull_request_template.md` and fill it in:
   number. Keep the template's HTML comment guidance intact. Leave `Closes #`
   empty only if no number was inferred.
 
-Derive the **PR title** from the issue title (if fetched) or the branch slug /
-primary commit — imperative mood, no trailing period.
+Derive the **PR title** in the format `OL-<N> <title>` where `<N>` is the issue
+number inferred in step 2 and `<title>` is taken from the issue title (if
+fetched) or the branch slug / primary commit — imperative mood, no trailing
+period (e.g. `OL-3 Add .NET Aspire to orchestrate local development`). If no
+issue number could be inferred, omit the `OL-<N> ` prefix and use just the
+title.
 
 ### 5. Create the PR via the GitHub MCP
 
