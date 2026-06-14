@@ -32,7 +32,12 @@ jobs:
         run: dotnet build --no-restore
 
       - name: Trust HTTPS dev certificate
-        run: dotnet dev-certs https --trust
+        # On Linux `--trust` exits non-zero and just stages the cert PEM under
+        # ~/.aspnet/dev-certs/trust; SSL_CERT_DIR must point at it for the test
+        # process (and its Aspire HttpClient) to trust the services' HTTPS endpoints.
+        run: |
+          dotnet dev-certs https --trust || true
+          echo "SSL_CERT_DIR=$HOME/.aspnet/dev-certs/trust:/usr/lib/ssl/certs" >> "$GITHUB_ENV"
 
       - name: Test
         run: dotnet test --no-build --logger trx --results-directory ./TestResults
