@@ -4,7 +4,6 @@ using System.Text.Json;
 using Aspire.Hosting;
 using Aspire.Hosting.Testing;
 using Azure.Messaging.ServiceBus;
-using MongoDB.Driver;
 using SearchService.Application.Common;
 using SearchService.Domain.Entities;
 
@@ -42,10 +41,10 @@ public class EndToEndTests : IAsyncLifetime
         using var uploadClient = _app.CreateHttpClient("uploadservice");
         using var searchClient = _app.CreateHttpClient("searchservice");
 
-        var serviceBusClient = new ServiceBusClient(
+        await using var serviceBusClient = new ServiceBusClient(
             await _app.GetConnectionStringAsync("servicebus")
         );
-        var sender = serviceBusClient.CreateSender("image-uploaded");
+        await using var sender = serviceBusClient.CreateSender("image-uploaded");
 
         // Act
         // Upload image to object store
@@ -74,7 +73,7 @@ public class EndToEndTests : IAsyncLifetime
         using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(30));
         while (!cts.IsCancellationRequested)
         {
-            var response = await searchClient.GetAsync("/image-metadata", cts.Token);
+            using var response = await searchClient.GetAsync("/image-metadata", cts.Token);
             result = await response.Content.ReadFromJsonAsync<PagedResult<ImageMetadata>>(
                 cancellationToken: cts.Token
             );
