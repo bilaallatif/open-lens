@@ -46,3 +46,5 @@ Thumbs.db
 appsettings.Development.json
 *.local.json
 .env
+
+.vscode

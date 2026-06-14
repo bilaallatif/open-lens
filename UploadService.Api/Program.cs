@@ -5,9 +5,10 @@ using UploadService.Application;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.AddServiceDefaults();
+
 builder.Services.AddObjectStorageServices();
 builder.Services.AddApplicationServices();
-builder.Services.AddHealthChecks();
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
@@ -21,7 +22,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.MapHealthChecks("/health");
+app.MapDefaultEndpoints();
 app.MapUploadEndpoints();
 
 app.Run();

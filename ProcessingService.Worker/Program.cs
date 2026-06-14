@@ -5,9 +5,10 @@ using ProcessingService.Worker.Workers;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.AddServiceDefaults();
+
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices();
-builder.Services.AddHealthChecks();
 
 builder.Services.AddAzureClients(azureBuilder =>
 {
@@ -18,6 +19,6 @@ builder.Services.AddHostedService<ImageProcessingWorker>();
 
 var app = builder.Build();
 
-app.MapHealthChecks("/health");
+app.MapDefaultEndpoints();
 
 app.Run();

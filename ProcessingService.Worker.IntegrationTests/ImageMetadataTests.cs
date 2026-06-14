@@ -69,7 +69,7 @@ public class ImageMetadataTests : IAsyncLifetime
 
         var blobContainerClient = _factory.Services.GetRequiredService<BlobContainerClient>();
         await blobContainerClient.CreateIfNotExistsAsync();
-        var stream = File.OpenRead(@"Assets\test.jpg");
+        var stream = File.OpenRead(Path.Combine("Assets", "test.jpg"));
         await blobContainerClient.UploadBlobAsync(blobName, stream);
 
         // Enqueue 'BlobCreated' event

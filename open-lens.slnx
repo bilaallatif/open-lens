@@ -10,6 +10,7 @@
     <File Path="docker-compose.yml" />
     <File Path="global.json" />
     <File Path=".gitignore" />
+    <File Path="nuget.config" />
   </Folder>
   <Folder Name="/services/" />
   <Folder Name="/services/ProcessingService/" />
@@ -50,4 +51,7 @@
   <Folder Name="/services/UploadService/tests/">
     <Project Path="UploadService.Api.IntegrationTests/UploadService.Api.IntegrationTests.csproj" />
   </Folder>
+  <Project Path="AppHost.Tests/AppHost.Tests.csproj" />
+  <Project Path="AppHost/AppHost.csproj" />
+  <Project Path="ServiceDefaults/ServiceDefaults.csproj" />
 </Solution>

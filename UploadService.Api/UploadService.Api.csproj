@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ServiceDefaults\ServiceDefaults.csproj" />
     <ProjectReference Include="..\Shared.ObjectStorage.Infrastructure\Shared.ObjectStorage.Infrastructure.csproj" />
     <ProjectReference Include="..\UploadService.Application\UploadService.Application.csproj" />
   </ItemGroup>
