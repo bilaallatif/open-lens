@@ -52,7 +52,7 @@ public class EndToEndTests : IAsyncLifetime
         using var presignedUrlResponse = await uploadClient.GetAsync("/presigned-url");
         Assert.Equal(HttpStatusCode.OK, presignedUrlResponse.StatusCode);
 
-        var imageBytes = await File.ReadAllBytesAsync(@"Assets\test.jpg");
+        var imageBytes = await File.ReadAllBytesAsync(Path.Combine("Assets", "test.jpg"));
         var body = await presignedUrlResponse.Content.ReadAsStringAsync();
         var json = JsonDocument.Parse(body).RootElement;
         var uploadUrl = json.GetProperty("uploadUrl").GetString()!;

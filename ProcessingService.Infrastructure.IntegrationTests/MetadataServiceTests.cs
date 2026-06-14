@@ -8,7 +8,7 @@ public class MetadataServiceTests
     public void ScrapeMetadataTest()
     {
         var metadataService = new MetadataService();
-        var stream = File.OpenRead(@"Assets\test.jpg");
+        var stream = File.OpenRead(Path.Combine("Assets", "test.jpg"));
 
         var metadata = metadataService.GetImageMetadata(stream);
 
