@@ -87,6 +87,8 @@ public class EndToEndTests : IAsyncLifetime
                 );
         }
 
-        Assert.Equal(blobName, result!.Items[0].BlobName);
+        var data = result!.Items[0];
+        Assert.Equal(blobName, data.BlobName);
+        Assert.Equal("Canon", data.ExifData.CameraMake);
     }
 }
