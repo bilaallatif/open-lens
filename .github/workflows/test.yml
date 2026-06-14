@@ -1,0 +1,53 @@
+name: Test
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: test-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Restore
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --no-restore
+
+      - name: Trust HTTPS dev certificate
+        # On Linux `--trust` exits non-zero and just stages the cert PEM under
+        # ~/.aspnet/dev-certs/trust; SSL_CERT_DIR must point at it for the test
+        # process (and its Aspire HttpClient) to trust the services' HTTPS endpoints.
+        run: |
+          dotnet dev-certs https --trust || true
+          echo "SSL_CERT_DIR=$HOME/.aspnet/dev-certs/trust:/usr/lib/ssl/certs" >> "$GITHUB_ENV"
+
+      - name: Test
+        # -m:1 runs the test projects sequentially so their Testcontainers don't
+        # start simultaneously and race for host ports (address already in use).
+        run: dotnet test --no-build -m:1 --logger trx --results-directory ./TestResults
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: ./TestResults/**/*.trx
+          if-no-files-found: warn
