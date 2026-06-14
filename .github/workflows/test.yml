@@ -40,7 +40,9 @@ jobs:
           echo "SSL_CERT_DIR=$HOME/.aspnet/dev-certs/trust:/usr/lib/ssl/certs" >> "$GITHUB_ENV"
 
       - name: Test
-        run: dotnet test --no-build --logger trx --results-directory ./TestResults
+        # -m:1 runs the test projects sequentially so their Testcontainers don't
+        # start simultaneously and race for host ports (address already in use).
+        run: dotnet test --no-build -m:1 --logger trx --results-directory ./TestResults
 
       - name: Upload test results
         if: always()
